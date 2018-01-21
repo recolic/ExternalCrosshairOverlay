@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossHair_Overlay_Test", "CrossHair_Overlay_Test\CrossHair_Overlay_Test.csproj", "{B74442BC-B539-4C42-BE36-A8CCB630FD77}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalCrosshairOverlay", "CrossHair_Overlay_Test\ExternalCrosshairOverlay.csproj", "{B74442BC-B539-4C42-BE36-A8CCB630FD77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

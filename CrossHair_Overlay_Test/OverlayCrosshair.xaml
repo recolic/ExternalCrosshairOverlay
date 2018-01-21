@@ -1,0 +1,26 @@
+﻿<Window x:Name="window" x:Class="External_Crosshair_Overlay.OverlayCrosshair"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:External_Crosshair_Overlay"
+        mc:Ignorable="d" Height="300" Width="300" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" Topmost="True" Loaded="window_Loaded" ShowInTaskbar="False" IsHitTestVisible="False" Focusable="False" IsTabStop="False" Cursor="None">
+    <Grid Cursor="None">
+        <Grid x:Name="grid_crosshair" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Cursor="None">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Name="w_grid" Width="5"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Name="h_grid" Height="5"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Rectangle Name="rightbar" Fill="Black" Margin=".5,0,0,0" Grid.Row="1" StrokeThickness="0" Grid.Column="2" Cursor="None"/>
+            <Rectangle Name="leftbar" Fill="Black" Margin="0,0,.5,0" Grid.Row="1" StrokeThickness="0" Cursor="None"/>
+            <Rectangle Name="topbar" Fill="Black" Margin="0,0,0,.5" StrokeThickness="0" Grid.Column="1" Cursor="None"/>
+            <Rectangle Name="bottombar" Fill="Black" Margin="0,.5,0,0" StrokeThickness="0" Grid.Column="1" Grid.Row="2" Cursor="None"/>
+        </Grid>
+    </Grid>
+</Window>

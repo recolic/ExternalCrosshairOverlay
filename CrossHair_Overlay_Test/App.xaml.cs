@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace CrossHair_Overlay_Test
+namespace External_Crosshair_Overlay
 {
     /// <summary>
     /// Interaction logic for App.xaml
