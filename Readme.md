@@ -6,7 +6,8 @@ Credits : gmastergreatee
 
 Simple external crosshair overlay, requires .Net v4.5
 
-This will work on borderless-fullscreen/windowed mode only.
+In some games like CSGO, this will work on fullscreen-windowed/windowed mode only.
+Whereas in games like UT2004, all display modes will be supported.
 
 Download [here](https://ci.appveyor.com/project/gmastergreatee/externalcrosshairoverlay/build/artifacts).
 

@@ -51,6 +51,7 @@ namespace External_Crosshair_Overlay
 
         bool errorFiredOnce = false;
         Process currentProcess;
+        IntPtr currentWindowHandle;
 
         public OverlayCrosshair()
         {
@@ -129,6 +130,9 @@ namespace External_Crosshair_Overlay
                         // Invoke the instructions on the original thread's(GUI) context
                         Dispatcher.Invoke(() =>
                         {
+                            // put the crosshair's window to the topmost z-index order(-1)
+                            SetWindowPos(currentWindowHandle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
+
                             // set the position & visibility of the crosshair's window
                             Top = rectangle.top;
                             Left = rectangle.left;
@@ -171,9 +175,9 @@ namespace External_Crosshair_Overlay
         private void window_Loaded(object sender, RoutedEventArgs e)
         {
             // setting the crosshair window transparent & non-focusable by altering styles
-            var windowHandle = (new WindowInteropHelper(this)).Handle;
-            var extendedStyle = GetWindowLong(windowHandle, GWL_EXSTYLE);
-            SetWindowLong(windowHandle, GWL_EXSTYLE, extendedStyle | WS_EX_NOACTIVATE | WS_EX_TRANSPARENT);
+            currentWindowHandle = (new WindowInteropHelper(this)).Handle;
+            var extendedStyle = GetWindowLong(currentWindowHandle, GWL_EXSTYLE);
+            SetWindowLong(currentWindowHandle, GWL_EXSTYLE, extendedStyle | WS_EX_NOACTIVATE | WS_EX_TRANSPARENT);
 
             // creating a thread to check for "AttachedWindow"'s coordinates
             Thread newThread = new Thread(new ThreadStart(Thread_loop));
@@ -205,6 +209,11 @@ namespace External_Crosshair_Overlay
         public const int WS_EX_NOACTIVATE = 0x08000000;
         public const int WS_EX_TRANSPARENT = 0x00000020;
         public const int GWL_EXSTYLE = -20;
+
+        public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        public const int SWP_NOACTIVATE = 0x0010;
+        public const int SWP_NOSIZE = 1;
+        public const int SWP_NOMOVE = 2;
         #endregion
 
         /// <summary>
@@ -244,6 +253,10 @@ namespace External_Crosshair_Overlay
         /// <returns></returns>
         [DllImport("user32.dll")]
         public static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
         #endregion
     }
 }
