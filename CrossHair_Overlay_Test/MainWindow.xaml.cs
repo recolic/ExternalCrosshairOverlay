@@ -43,8 +43,6 @@ namespace External_Crosshair_Overlay
 			crosshairOverlayWindow.AttachedToProcessComplete += AttachingToProcessComplete;
 			// display the transparent crosshair window
 			crosshairOverlayWindow.Show();
-            // set default crosshair color
-            crosshairOverlayWindow.SetCrosshairColor(Colors.Red);
 		}
 
         private void ReloadProcesses_Click(object sender, RoutedEventArgs e)
@@ -88,8 +86,13 @@ namespace External_Crosshair_Overlay
         {
             if (cmb_color.SelectedIndex >= 0)
             {
-                crosshairOverlayWindow.SetCrosshairColor(crosshairColors[cmb_color.SelectedIndex]);
+                crosshairOverlayWindow.SetCrosshairColor = crosshairColors[cmb_color.SelectedIndex];
             }
+        }
+
+        private void CrosshairTransparency_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            crosshairOverlayWindow.SetCrosshairTransparency = (byte)e.NewValue;
         }
 
         /// <summary>
@@ -202,6 +205,5 @@ namespace External_Crosshair_Overlay
         }
 
         #endregion
-
     }
 }

@@ -14,6 +14,8 @@ Download [here](https://ci.appveyor.com/project/gmastergreatee/externalcrosshair
 
 - custom sized crosshair
 - choose crosshair color
+- change crosshair transparency
+- display crosshair on selected process
 - entirely in C# (no DirectX dependencies)
 
 ## License

@@ -18,6 +18,8 @@
             <RowDefinition Height="22"/>
             <RowDefinition Height="5"/>
             <RowDefinition Height="22"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="22"/>
             <RowDefinition Height="14"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -40,6 +42,8 @@
         <Label Content="Crosshair Color :" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="9" Padding="5,0,0,0" VerticalAlignment="Center"/>
         <ComboBox x:Name="cmb_color" Margin="97,0,80,0" Grid.Column="1" Grid.Row="9"/>
         <Button Content="Set Color" HorizontalAlignment="Right" Margin="0" Width="75" Grid.Column="1" Grid.Row="9" Click="ChangeCrosshairColor_Click"/>
+        <Label Content="Crosshair Transparency :" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="11" Padding="5,0,0,0" VerticalAlignment="Center"/>
+        <Slider Grid.Column="1" Grid.Row="11" Margin="137,2,0,0" Padding="0" Maximum="255" SmallChange="1" LargeChange="5" Value="100" ValueChanged="CrosshairTransparency_ValueChanged"/>
 
     </Grid>
 </Window>

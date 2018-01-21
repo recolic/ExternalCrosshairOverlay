@@ -19,6 +19,36 @@ namespace External_Crosshair_Overlay
         public int CrosshairScale;
         private GridLength originalCrosshairScale;
 
+        #region Setters
+        private Color crosshairColor = Colors.Red;
+        private byte crosshairTransparency = 100;
+
+        /// <summary>
+        /// Sets the crosshair's color
+        /// </summary>
+        public Color SetCrosshairColor
+        {
+            set
+            {
+                crosshairColor = value;
+                CrosshairColor(value, crosshairTransparency);
+            }
+        }
+
+        /// <summary>
+        /// Set the crosshair's transparency
+        /// </summary>
+        public byte SetCrosshairTransparency
+        {
+            set
+            {
+                crosshairTransparency = value;
+                CrosshairColor(crosshairColor, value);
+            }
+        }
+
+        #endregion
+
         bool errorFiredOnce = false;
         Process currentProcess;
 
@@ -60,10 +90,10 @@ namespace External_Crosshair_Overlay
         /// Set the crosshair's color
         /// </summary>
         /// <param name="color">The <see cref="Color"/> object to use as the fill</param>
-        public void SetCrosshairColor(Color color)
+        private void CrosshairColor(Color color, byte transparency)
         {
             // setting alpha value to 100 for semi-transparent
-            var solidColor = new SolidColorBrush(Color.FromArgb(100, color.R, color.G, color.B));
+            var solidColor = new SolidColorBrush(Color.FromArgb(transparency, color.R, color.G, color.B));
 
             leftbar.Fill = solidColor;
             rightbar.Fill = solidColor;
@@ -81,7 +111,7 @@ namespace External_Crosshair_Overlay
                 if (currentProcess != null)
                 {
                     var rectangle = GetWindowRect(currentProcess.MainWindowHandle);
-                    // case when attached process is closed
+                    // case when attached process is minimized/closed
                     if (rectangle.left <= 0 &&
                         rectangle.top <= 0 &&
                         rectangle.right <= 0 &&
@@ -108,13 +138,14 @@ namespace External_Crosshair_Overlay
                             {
                                 grid_crosshair.Visibility = Visibility.Visible;
                             }
-                        });
 
-                        // reset error trigger if no errors found
-                        if (errorFiredOnce)
-                        {
-                            errorFiredOnce = false;
-                        }
+                            // reset error trigger if no errors found
+                            if (errorFiredOnce)
+                            {
+                                errorFiredOnce = false;
+                                AttachedToProcessComplete?.Invoke(currentProcess.ProcessName + ".exe(" + currentProcess.MainWindowTitle + ")");
+                            }
+                        });
                     }
                 }
                 // sleep the thread to decrease CPU usage
