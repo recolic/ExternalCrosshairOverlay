@@ -9,7 +9,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="14"/>
-            <RowDefinition Height="23"/>
+            <RowDefinition Height="22"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="22"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="22"/>
             <RowDefinition Height="5"/>
             <RowDefinition Height="22"/>
             <RowDefinition Height="5"/>
@@ -44,6 +48,12 @@
         <Button Content="Set Color" HorizontalAlignment="Right" Margin="0" Width="75" Grid.Column="1" Grid.Row="9" Click="ChangeCrosshairColor_Click"/>
         <Label Content="Crosshair Transparency :" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="11" Padding="5,0,0,0" VerticalAlignment="Center"/>
         <Slider Grid.Column="1" Grid.Row="11" Margin="137,2,0,0" Padding="0" Maximum="255" SmallChange="1" LargeChange="5" Value="100" ValueChanged="CrosshairTransparency_ValueChanged"/>
+        <Label Content="Crosshair Pic :" Grid.Column="1" HorizontalAlignment="Left" Margin="0,3" Grid.Row="13" Padding="5,0,0,0" VerticalAlignment="Center"/>
+        <Label Content="Default" x:Name="lbl_crosshair_pic" Grid.Column="1" HorizontalAlignment="Left" Margin="78,3,0,3" Grid.Row="13" Padding="5,0,0,0" VerticalAlignment="Center"/>
+        <Label Content="Offsets :" Grid.Column="1" HorizontalAlignment="Left" Margin="0,3.02" Grid.Row="15" Padding="5,0,0,0" VerticalAlignment="Center"/>
+        <Label Content="0, 0 (x, y - from center)" x:Name="lbl_offsets" Grid.Column="1" HorizontalAlignment="Left" Margin="47.976,3.02,0,3.02" Grid.Row="15" Padding="5,0,0,0" VerticalAlignment="Center"/>
+        <Button x:Name="btn_resetPic" Content="Reset Pic" HorizontalAlignment="Right" Width="75" Grid.Column="1" Margin="0" Grid.Row="13"/>
+        <Button x:Name="btn_loadPic" Content="Load Pic" HorizontalAlignment="Right" Width="75" Grid.Column="1" Margin="0,0,80,0" Grid.Row="13"/>
 
     </Grid>
 </Window>
