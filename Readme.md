@@ -13,11 +13,11 @@ Download [here](https://ci.appveyor.com/project/gmastergreatee/externalcrosshair
 
 ## Features
 
-- custom sized crosshair
-- choose crosshair color(for primary crosshair only)
-- change crosshair transparency
-- display crosshair on selected process
-- entirely in C# (no DirectX dependencies)
+- [x] custom sized crosshair
+- [x] choose crosshair color(for primary crosshair only)
+- [x] change crosshair transparency
+- [x] display crosshair on selected process
+- [x] entirely in C# (no DirectX dependencies)
 - [ ] supports custom crosshair option(png/jpeg images - other formats experimental)
 - [ ] set the crosshair offset manually
 - [ ] auto-saving of configuration based on the target game
