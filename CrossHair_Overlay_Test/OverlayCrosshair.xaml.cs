@@ -59,6 +59,9 @@ namespace External_Crosshair_Overlay
         Process currentProcess;
         IntPtr currentWindowHandle;
 
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public OverlayCrosshair()
         {
             InitializeComponent();
@@ -97,7 +100,7 @@ namespace External_Crosshair_Overlay
             else
             {
                 var originalCrosshairScale = CrosshairScale * 0.25;
-                img_crosshair.RenderTransform = new ScaleTransform(originalCrosshairScale, originalCrosshairScale);
+                img_crosshair.LayoutTransform = new ScaleTransform(originalCrosshairScale, originalCrosshairScale);
             }
         }
 
@@ -116,7 +119,12 @@ namespace External_Crosshair_Overlay
             bottombar.Fill = solidColor;
         }
 
-        public void SetCrosshairPic(string filePath)
+        /// <summary>
+        /// Sets/Resets the crosshair picture
+        /// </summary>
+        /// <param name="filePath">The filepath for the crosshair's image</param>
+        /// <returns>True if success, else false</returns>
+        public bool SetCrosshairPic(string filePath)
         {
             if (String.IsNullOrWhiteSpace(filePath))
             {
@@ -134,14 +142,14 @@ namespace External_Crosshair_Overlay
                     catch
                     {
                         MessageBox.Show("Invalid image file selected", "Oops!");
-                        return;
+                        return false;
                     }
                 }
                 else
                 {
                     // this block of code will never actually execute(at-least IMO)
                     MessageBox.Show("No image file selected", "Oops!");
-                    return;
+                    return false;
                 }
             }
 
@@ -149,6 +157,7 @@ namespace External_Crosshair_Overlay
             SetCrosshairTransparency = crosshairTransparency;
             HideWindows();
             DisplayWindow();
+            return true;
         }
 
         /// <summary>

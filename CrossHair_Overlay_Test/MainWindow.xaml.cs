@@ -93,7 +93,7 @@ namespace External_Crosshair_Overlay
 
         private void CrosshairTransparency_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            crosshairOverlayWindow.SetCrosshairTransparency = (byte)e.NewValue;
+            crosshairOverlayWindow.SetCrosshairTransparency = (double)e.NewValue;
         }
 
         /// <summary>
@@ -206,5 +206,43 @@ namespace External_Crosshair_Overlay
         }
 
         #endregion
+
+        private void btn_resetPic_Click(object sender, RoutedEventArgs e)
+        {
+            if (crosshairOverlayWindow.SetCrosshairPic(""))
+            {
+                lbl_crosshair_pic.Content = "Default";
+            }
+        }
+
+        private void btn_loadPic_Click(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog 
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                // Set filter for file extension and default file extension 
+                DefaultExt = ".png",
+                Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpeg)|*.jpeg|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif|BMP Files (*.bmp)|*.bmp|All Files (*.*)|*.*"
+            };
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            var result = dlg.ShowDialog();
+
+            // Get the selected file name
+            if (result == true)
+            {
+                // Open document 
+                var fileName = dlg.FileName;
+                if (crosshairOverlayWindow.SetCrosshairPic(fileName))
+                {
+                    var justFileName = (from x in fileName.Split('\\')
+                                        select x).LastOrDefault();
+                    if (!String.IsNullOrWhiteSpace(justFileName))
+                        lbl_crosshair_pic.Content = justFileName;
+                    else
+                        lbl_crosshair_pic.Content = "Img_File_With_Invalid_Name";
+                }
+            }
+        }
     }
 }
