@@ -258,7 +258,7 @@ namespace External_Crosshair_Overlay
         {
             // only collect process with a valid window title
             allRunningProcesses = (from process in Process.GetProcesses()
-                                   where !String.IsNullOrWhiteSpace(process.MainWindowTitle) && process.MainWindowTitle != "External Crosshair Overlay by gmastergreatee"
+                                   where process.MainWindowHandle != IntPtr.Zero && !String.IsNullOrWhiteSpace(process.MainWindowTitle) && process.MainWindowTitle != "External Crosshair Overlay by gmastergreatee"
                                    select process).ToList();
 
             // change the gui in accordance with the data collected
