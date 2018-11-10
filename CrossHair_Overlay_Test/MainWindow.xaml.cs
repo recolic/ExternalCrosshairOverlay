@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 
@@ -17,11 +18,42 @@ namespace External_Crosshair_Overlay
         #region Variables
         // global level crosshair window
         OverlayCrosshair crosshairOverlayWindow = new OverlayCrosshair();
+        KeyboardHook kHook;
 
         List<Process> allRunningProcesses;
         List<string> nonEmptyWindowNames = new List<string>();
         List<Color> crosshairColors = new List<Color>();
         List<string> crosshairColorNames = new List<string>();
+        int offsetX = 0;
+        int offsetY = 0;
+
+        public int OffsetX
+        {
+            get
+            {
+                return offsetX;
+            }
+            set
+            {
+                offsetX = value;
+                SetOffsets();
+            }
+        }
+
+        public int OffsetY
+        {
+            get
+            {
+                return offsetY;
+            }
+            set
+            {
+                offsetY = value;
+                SetOffsets();
+            }
+        }
+
+        bool isAttachedToSomeProcess = false;
         #endregion
 
         /// <summary>
@@ -30,17 +62,6 @@ namespace External_Crosshair_Overlay
         public ECO_MainGUI()
         {
             InitializeComponent();
-        }
-
-        private void HotKeyManager_HotKeyPressed(object sender, HotKeyEventArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                if (e.Modifiers == KeyModifiers.Alt && e.Key == System.Windows.Forms.Keys.F9)
-                {
-                    crosshairOverlayWindow.ToggleOffsetSetupMode();
-                }
-            });
         }
 
         #region Event Handling
@@ -56,12 +77,56 @@ namespace External_Crosshair_Overlay
             // display the transparent crosshair window
             crosshairOverlayWindow.Show();
             // initializing all hotkeys
-            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.F9, KeyModifiers.Alt);
-            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Up, 0);
-            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Down, 0);
-            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Left, 0);
-            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Right, 0);
-            HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(HotKeyManager_HotKeyPressed);
+            kHook = new KeyboardHook();
+            kHook.KeyCombinationPressed += KHook_KeyCombinationPressed;
+        }
+
+        private void KHook_KeyCombinationPressed(Key keyPressed)
+        {
+            if (isAttachedToSomeProcess)
+            {
+                if (keyPressed == Key.OemMinus)
+                {
+                    crosshairOverlayWindow.ToggleOffsetSetupMode();
+                }
+                else if (keyPressed == Key.Up)
+                {
+                    OffsetY = crosshairOverlayWindow.MoveCrosshairUp();
+                }
+                else if (keyPressed == Key.Down)
+                {
+                    OffsetY = crosshairOverlayWindow.MoveCrosshairDown();
+                }
+                else if (keyPressed == Key.Left)
+                {
+                    OffsetX = crosshairOverlayWindow.MoveCrosshairLeft();
+                }
+                else if (keyPressed == Key.Right)
+                {
+                    OffsetX = crosshairOverlayWindow.MoveCrosshairRight();
+                }
+                else if (keyPressed == Key.W)
+                {
+                    OffsetY = crosshairOverlayWindow.MoveCrosshairUp(true);
+                }
+                else if (keyPressed == Key.S)
+                {
+                    OffsetY = crosshairOverlayWindow.MoveCrosshairDown(true);
+                }
+                else if (keyPressed == Key.A)
+                {
+                    OffsetX = crosshairOverlayWindow.MoveCrosshairLeft(true);
+                }
+                else if (keyPressed == Key.D)
+                {
+                    OffsetX = crosshairOverlayWindow.MoveCrosshairRight(true);
+                }
+            }
+        }
+
+        private void SetOffsets()
+        {
+            lbl_offsets.Content = offsetX + ", " + offsetY + " (x, y from center)";
         }
 
         private void ReloadProcesses_Click(object sender, RoutedEventArgs e)
@@ -124,6 +189,7 @@ namespace External_Crosshair_Overlay
             {
                 if (lbl_attachTo.Content.ToString() != processName)
                     lbl_attachTo.Content = processName;
+                isAttachedToSomeProcess = processName != "None";
             });
         }
 

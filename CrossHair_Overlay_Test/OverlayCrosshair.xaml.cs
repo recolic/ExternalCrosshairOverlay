@@ -23,6 +23,7 @@ namespace External_Crosshair_Overlay
         public int CrosshairScale;
         private CrosshairMode crosshairMode = CrosshairMode.Default;
         bool offsetSetupMode = false;
+        int offsetSetupSpeed = 10;
 
         #region Setters
         private Color crosshairColor = Colors.Red;
@@ -30,6 +31,7 @@ namespace External_Crosshair_Overlay
 
         public int OffsetX { get; set; } = 0;
         public int OffsetY { get; set; } = 0;
+        public Thickness CrosshairMargin { get; set; } = new Thickness(0, 0, 0, 0);
 
         /// <summary>
         /// Sets the crosshair's color
@@ -72,7 +74,7 @@ namespace External_Crosshair_Overlay
             InitializeComponent();
         }
 
-        public void ToggleOffsetSetupMode()
+        public bool ToggleOffsetSetupMode()
         {
             if (offsetSetupMode)
             {
@@ -86,11 +88,70 @@ namespace External_Crosshair_Overlay
                 lbl_header.Visibility = Visibility.Visible;
                 lbl_footer.Visibility = Visibility.Visible;
             }
+            return offsetSetupMode;
         }
 
-        public void MoveCrosshairLeft()
+        public int MoveCrosshairLeft(bool fastMode = false)
         {
-            // work in progress...
+            OffsetX = fastMode ? OffsetX - offsetSetupSpeed : OffsetX - 1;
+            SetMargin();
+            return OffsetX;
+        }
+
+        public int MoveCrosshairUp(bool fastMode = false)
+        {
+            OffsetY = fastMode ? OffsetY - offsetSetupSpeed : OffsetY - 1;
+            SetMargin();
+            return OffsetY;
+        }
+
+        public int MoveCrosshairRight(bool fastMode = false)
+        {
+            OffsetX = fastMode ? OffsetX + offsetSetupSpeed : OffsetX + 1;
+            SetMargin();
+            return OffsetX;
+        }
+
+        public int MoveCrosshairDown(bool fastMode = false)
+        {
+            OffsetY = fastMode ? OffsetY + offsetSetupSpeed : OffsetY + 1;
+            SetMargin();
+            return OffsetY;
+        }
+
+        private void SetMargin()
+        {
+            if (offsetSetupMode)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    var top = 0D;
+                    var bottom = 0D;
+                    var left = 0D;
+                    var right = 0D;
+
+                    if (OffsetX <= 0)
+                    {
+                        left = +OffsetX;
+                    }
+                    else
+                    {
+                        right = -OffsetX;
+                    }
+
+                    if (OffsetY <= 0)
+                    {
+                        top = +OffsetY;
+                    }
+                    else
+                    {
+                        bottom = -OffsetY;
+                    }
+
+                    grid_crosshair.Margin = new Thickness(left, top, right, bottom);
+                    img_crosshair.Margin = new Thickness(left, top, right, bottom);
+                });
+            }
         }
 
         /// <summary>
@@ -181,8 +242,11 @@ namespace External_Crosshair_Overlay
 
             SetCrosshairScale(CrosshairScale);
             SetCrosshairTransparency = crosshairTransparency;
-            HideWindows();
-            DisplayWindow();
+            if (grid_crosshair.Visibility != img_crosshair.Visibility)
+            {
+                HideWindows();
+                DisplayWindow();
+            }
             return true;
         }
 
@@ -311,6 +375,10 @@ namespace External_Crosshair_Overlay
                 {
                     HideWindows();
                     AttachedToProcessComplete?.Invoke("None");
+                    if (offsetSetupMode)
+                    {
+                        ToggleOffsetSetupMode();
+                    }
                 }
             });
         }

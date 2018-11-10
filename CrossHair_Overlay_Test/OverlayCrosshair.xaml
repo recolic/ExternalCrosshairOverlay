@@ -16,7 +16,7 @@
                     </LinearGradientBrush>
                 </Label.Background>
             </Label>
-            <Label x:Name="lbl_footer" Content="Use arrow keys to move cursor" VerticalAlignment="Bottom" Margin="0,0,20,20" Padding="10,5,5,5" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" Width="200" Visibility="Hidden">
+            <Label x:Name="lbl_footer" Content="Use arrow keys(or wasd-faster) to move crosshair" VerticalAlignment="Bottom" Margin="0,0,20,20" Padding="10,5,5,5" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" Visibility="Hidden">
                 <Label.Background>
                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                         <GradientStop Color="Gray" Offset="0.953"/>
