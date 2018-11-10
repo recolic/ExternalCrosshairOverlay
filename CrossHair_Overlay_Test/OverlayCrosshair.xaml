@@ -7,23 +7,21 @@
         mc:Ignorable="d" Height="300" Width="300" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" Topmost="True" Loaded="window_Loaded" ShowInTaskbar="False" IsHitTestVisible="False" Focusable="False" IsTabStop="False" Cursor="None">
     <Grid Cursor="None">
         <Grid Cursor="None">
-            <Label x:Name="lbl_header" Content="Offset-Setup Mode" VerticalAlignment="Top" Margin="10,10,10,0" Padding="10,5,5,5" Foreground="White" FontWeight="Bold" Visibility="Hidden">
+            <Label x:Name="lbl_header" Content="Offset-Setup Mode" VerticalAlignment="Top" Margin="20,20,0,0" Padding="10,5,5,5" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" Width="200" Visibility="Hidden">
                 <Label.Background>
                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                        <GradientStop Color="#56404040"/>
+                        <GradientStop Color="Gray" Offset="0.047"/>
                         <GradientStop Offset="1"/>
-                        <GradientStop Color="#E7515151" Offset="1"/>
-                        <GradientStop Color="#C46A6A6A" Offset="1"/>
-                        <GradientStop Color="#AB7C7C7C" Offset="1"/>
-                        <GradientStop Color="#9B878787" Offset="1"/>
-                        <GradientStop Color="#88959595" Offset="0.161"/>
-                        <GradientStop Color="#6DA9A9A9" Offset="0.244"/>
-                        <GradientStop Color="#53BDBDBD" Offset="0.315"/>
-                        <GradientStop Color="#38D1D1D1" Offset="0.38"/>
-                        <GradientStop Color="#29DDDDDD" Offset="0.444"/>
-                        <GradientStop Color="#1CE7E7E7" Offset="0.502"/>
-                        <GradientStop Color="#00F1F1F1" Offset="0.577"/>
-                        <GradientStop Color="#FF404040" Offset="0.05"/>
+                        <GradientStop Color="#00858585"/>
+                    </LinearGradientBrush>
+                </Label.Background>
+            </Label>
+            <Label x:Name="lbl_footer" Content="Use arrow keys to move cursor" VerticalAlignment="Bottom" Margin="0,0,20,20" Padding="10,5,5,5" Foreground="White" FontWeight="Bold" HorizontalAlignment="Right" Width="200" Visibility="Hidden">
+                <Label.Background>
+                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                        <GradientStop Color="Gray" Offset="0.953"/>
+                        <GradientStop/>
+                        <GradientStop Color="#00858585" Offset="1"/>
                     </LinearGradientBrush>
                 </Label.Background>
             </Label>

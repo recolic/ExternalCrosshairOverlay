@@ -19,12 +19,17 @@ namespace External_Crosshair_Overlay
     {
         public delegate void AttachedTo(string processName);
         public AttachedTo AttachedToProcessComplete;
+        public EventHandler OffsetSet;
         public int CrosshairScale;
         private CrosshairMode crosshairMode = CrosshairMode.Default;
+        bool offsetSetupMode = false;
 
         #region Setters
         private Color crosshairColor = Colors.Red;
         private double crosshairTransparency = 1;
+
+        public int OffsetX { get; set; } = 0;
+        public int OffsetY { get; set; } = 0;
 
         /// <summary>
         /// Sets the crosshair's color
@@ -65,6 +70,27 @@ namespace External_Crosshair_Overlay
         public OverlayCrosshair()
         {
             InitializeComponent();
+        }
+
+        public void ToggleOffsetSetupMode()
+        {
+            if (offsetSetupMode)
+            {
+                offsetSetupMode = false;
+                lbl_header.Visibility = Visibility.Hidden;
+                lbl_footer.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                offsetSetupMode = true;
+                lbl_header.Visibility = Visibility.Visible;
+                lbl_footer.Visibility = Visibility.Visible;
+            }
+        }
+
+        public void MoveCrosshairLeft()
+        {
+            // work in progress...
         }
 
         /// <summary>

@@ -32,6 +32,17 @@ namespace External_Crosshair_Overlay
             InitializeComponent();
         }
 
+        private void HotKeyManager_HotKeyPressed(object sender, HotKeyEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (e.Modifiers == KeyModifiers.Alt && e.Key == System.Windows.Forms.Keys.F9)
+                {
+                    crosshairOverlayWindow.ToggleOffsetSetupMode();
+                }
+            });
+        }
+
         #region Event Handling
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -44,6 +55,13 @@ namespace External_Crosshair_Overlay
             crosshairOverlayWindow.AttachedToProcessComplete += AttachingToProcessComplete;
             // display the transparent crosshair window
             crosshairOverlayWindow.Show();
+            // initializing all hotkeys
+            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.F9, KeyModifiers.Alt);
+            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Up, 0);
+            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Down, 0);
+            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Left, 0);
+            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Right, 0);
+            HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(HotKeyManager_HotKeyPressed);
         }
 
         private void ReloadProcesses_Click(object sender, RoutedEventArgs e)
@@ -71,7 +89,7 @@ namespace External_Crosshair_Overlay
 
         private void IncreaseCrosshairScale_Click(object sender, RoutedEventArgs e)
         {
-            if (crosshairOverlayWindow.CrosshairScale < 15)
+            if (crosshairOverlayWindow.CrosshairScale < 25)
             {
                 crosshairOverlayWindow.SetCrosshairScale(crosshairOverlayWindow.CrosshairScale + 1);
                 lbl_crosshairScale.Content = crosshairOverlayWindow.CrosshairScale;
@@ -109,6 +127,47 @@ namespace External_Crosshair_Overlay
             });
         }
 
+        private void btn_resetPic_Click(object sender, RoutedEventArgs e)
+        {
+            if (crosshairOverlayWindow.SetCrosshairPic(""))
+            {
+                lbl_crosshair_pic.Content = "Default";
+                cmb_color.IsEnabled = true;
+                btn_SetColor.IsEnabled = true;
+            }
+        }
+
+        private void btn_loadPic_Click(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                // Set filter for file extension and default file extension
+                DefaultExt = ".png",
+                Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpeg)|*.jpeg|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif|BMP Files (*.bmp)|*.bmp|All Files (*.*)|*.*"
+            };
+
+            // Display OpenFileDialog by calling ShowDialog method
+            var result = dlg.ShowDialog();
+
+            // Get the selected file name
+            if (result == true)
+            {
+                // Open document
+                var fileName = dlg.FileName;
+                if (crosshairOverlayWindow.SetCrosshairPic(fileName))
+                {
+                    var justFileName = (from x in fileName.Split('\\')
+                                        select x).LastOrDefault();
+                    if (!String.IsNullOrWhiteSpace(justFileName))
+                        lbl_crosshair_pic.Content = justFileName;
+                    else
+                        lbl_crosshair_pic.Content = "Img_File_With_Invalid_Name";
+                    cmb_color.IsEnabled = false;
+                    btn_SetColor.IsEnabled = false;
+                }
+            }
+        }
         #endregion
 
         #region Custom Methods
@@ -206,43 +265,5 @@ namespace External_Crosshair_Overlay
         }
 
         #endregion
-
-        private void btn_resetPic_Click(object sender, RoutedEventArgs e)
-        {
-            if (crosshairOverlayWindow.SetCrosshairPic(""))
-            {
-                lbl_crosshair_pic.Content = "Default";
-            }
-        }
-
-        private void btn_loadPic_Click(object sender, RoutedEventArgs e)
-        {
-            // Create OpenFileDialog 
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
-            {
-                // Set filter for file extension and default file extension 
-                DefaultExt = ".png",
-                Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpeg)|*.jpeg|JPG Files (*.jpg)|*.jpg|GIF Files (*.gif)|*.gif|BMP Files (*.bmp)|*.bmp|All Files (*.*)|*.*"
-            };
-
-            // Display OpenFileDialog by calling ShowDialog method 
-            var result = dlg.ShowDialog();
-
-            // Get the selected file name
-            if (result == true)
-            {
-                // Open document 
-                var fileName = dlg.FileName;
-                if (crosshairOverlayWindow.SetCrosshairPic(fileName))
-                {
-                    var justFileName = (from x in fileName.Split('\\')
-                                        select x).LastOrDefault();
-                    if (!String.IsNullOrWhiteSpace(justFileName))
-                        lbl_crosshair_pic.Content = justFileName;
-                    else
-                        lbl_crosshair_pic.Content = "Img_File_With_Invalid_Name";
-                }
-            }
-        }
     }
 }
