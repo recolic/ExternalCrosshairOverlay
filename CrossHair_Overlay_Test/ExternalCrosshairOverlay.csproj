@@ -101,6 +101,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Config\ConfigSaver.cs" />
+    <Compile Include="Config\CrosshairMode.cs" />
     <Compile Include="Config\OverlayConfig.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -143,6 +144,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="crosshair_sample.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

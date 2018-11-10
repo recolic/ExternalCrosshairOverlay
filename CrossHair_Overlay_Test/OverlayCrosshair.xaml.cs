@@ -1,10 +1,13 @@
-﻿using System;
+﻿using CrossHair_Overlay_Test.Config;
+using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace External_Crosshair_Overlay
@@ -17,11 +20,11 @@ namespace External_Crosshair_Overlay
         public delegate void AttachedTo(string processName);
         public AttachedTo AttachedToProcessComplete;
         public int CrosshairScale;
-        private GridLength originalCrosshairScale;
+        private CrosshairMode crosshairMode = CrosshairMode.Default;
 
         #region Setters
         private Color crosshairColor = Colors.Red;
-        private byte crosshairTransparency = 100;
+        private double crosshairTransparency = 1;
 
         /// <summary>
         /// Sets the crosshair's color
@@ -31,19 +34,22 @@ namespace External_Crosshair_Overlay
             set
             {
                 crosshairColor = value;
-                CrosshairColor(value, crosshairTransparency);
+                CrosshairColor(value);
             }
         }
 
         /// <summary>
         /// Set the crosshair's transparency
         /// </summary>
-        public byte SetCrosshairTransparency
+        public double SetCrosshairTransparency
         {
             set
             {
                 crosshairTransparency = value;
-                CrosshairColor(crosshairColor, value);
+                if (crosshairMode == CrosshairMode.Default)
+                    grid_crosshair.Opacity = value;
+                else
+                    img_crosshair.Opacity = value;
             }
         }
 
@@ -76,30 +82,73 @@ namespace External_Crosshair_Overlay
         {
             // recording the crosshair scale to return to the calling GUI when asked for
             CrosshairScale = scale;
-            originalCrosshairScale = new GridLength(CrosshairScale > 1 ? CrosshairScale * 0.75 : CrosshairScale);
+            if (crosshairMode == CrosshairMode.Default)
+            {
+                var originalCrosshairScale = new GridLength(CrosshairScale > 1 ? CrosshairScale * 0.75 : CrosshairScale);
 
-            // (controlled by RowDefinitions &ColumnDefinitions)
-            // setting the thickness of the crosshair
-            w_grid.Width = originalCrosshairScale;
-            h_grid.Height = originalCrosshairScale;
-            // setting the crosshair grid's height & thickness
-            grid_crosshair.Height = CrosshairScale * 25;
-            grid_crosshair.Width = CrosshairScale * 25;
+                // (controlled by RowDefinitions &ColumnDefinitions)
+                // setting the thickness of the crosshair
+                w_grid.Width = originalCrosshairScale;
+                h_grid.Height = originalCrosshairScale;
+                // setting the crosshair grid's height & thickness
+                grid_crosshair.Height = CrosshairScale * 25;
+                grid_crosshair.Width = CrosshairScale * 25;
+            }
+            else
+            {
+                var originalCrosshairScale = CrosshairScale * 0.25;
+                img_crosshair.RenderTransform = new ScaleTransform(originalCrosshairScale, originalCrosshairScale);
+            }
         }
 
         /// <summary>
         /// Set the crosshair's color
         /// </summary>
         /// <param name="color">The <see cref="Color"/> object to use as the fill</param>
-        private void CrosshairColor(Color color, byte transparency)
+        private void CrosshairColor(Color color)
         {
             // setting alpha value to 100 for semi-transparent
-            var solidColor = new SolidColorBrush(Color.FromArgb(transparency, color.R, color.G, color.B));
+            var solidColor = new SolidColorBrush(Color.FromRgb(color.R, color.G, color.B));
 
             leftbar.Fill = solidColor;
             rightbar.Fill = solidColor;
             topbar.Fill = solidColor;
             bottombar.Fill = solidColor;
+        }
+
+        public void SetCrosshairPic(string filePath)
+        {
+            if (String.IsNullOrWhiteSpace(filePath))
+            {
+                crosshairMode = CrosshairMode.Default;
+            }
+            else
+            {
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        img_crosshair.Source = new BitmapImage(new UriBuilder(filePath).Uri);
+                        crosshairMode = CrosshairMode.Custom;
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Invalid image file selected", "Oops!");
+                        return;
+                    }
+                }
+                else
+                {
+                    // this block of code will never actually execute(at-least IMO)
+                    MessageBox.Show("No image file selected", "Oops!");
+                    return;
+                }
+            }
+
+            SetCrosshairScale(CrosshairScale);
+            SetCrosshairTransparency = crosshairTransparency;
+            HideWindows();
+            DisplayWindow();
         }
 
         /// <summary>
@@ -138,10 +187,7 @@ namespace External_Crosshair_Overlay
                             Left = rectangle.left;
                             Height = rectangle.bottom - rectangle.top;
                             Width = rectangle.right - rectangle.left;
-                            if (grid_crosshair.Visibility != Visibility.Visible)
-                            {
-                                grid_crosshair.Visibility = Visibility.Visible;
-                            }
+                            DisplayWindow();
 
                             // reset error trigger if no errors found
                             if (errorFiredOnce)
@@ -155,6 +201,37 @@ namespace External_Crosshair_Overlay
                 // sleep the thread to decrease CPU usage
                 Thread.Sleep(100);
             }
+        }
+
+        /// <summary>
+        /// Display/Hide a single crosshair-container(based on the value of <see cref="crosshairMode"/>)
+        /// </summary>
+        /// <param name="makeWindowVisible">Whether to display or hide the window</param>
+        private void DisplayWindow(bool makeWindowVisible = true)
+        {
+            var visibility = Visibility.Visible;
+            if (!makeWindowVisible)
+            {
+                visibility = Visibility.Hidden;
+            }
+
+            if (crosshairMode == CrosshairMode.Default)
+            {
+                grid_crosshair.Visibility = visibility;
+            }
+            else
+            {
+                img_crosshair.Visibility = visibility;
+            }
+        }
+
+        /// <summary>
+        /// Hide all the crosshair-containers
+        /// </summary>
+        private void HideWindows()
+        {
+            grid_crosshair.Visibility = Visibility.Hidden;
+            img_crosshair.Visibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -197,7 +274,7 @@ namespace External_Crosshair_Overlay
                 // only run if attached process isn't null or the event hasn't been triggered
                 if (currentProcess != null && !errorFiredOnce)
                 {
-                    grid_crosshair.Visibility = Visibility.Hidden;
+                    HideWindows();
                     AttachedToProcessComplete?.Invoke("None");
                 }
             });

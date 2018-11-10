@@ -7,7 +7,7 @@
         mc:Ignorable="d" Height="300" Width="300" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" Topmost="True" Loaded="window_Loaded" ShowInTaskbar="False" IsHitTestVisible="False" Focusable="False" IsTabStop="False" Cursor="None">
     <Grid Cursor="None">
         <Grid Cursor="None">
-            <Label x:Name="lbl_header" Content="Offset-Setup Mode" VerticalAlignment="Top" Margin="10,10,10,0" Padding="10,5,5,5" Foreground="White" FontWeight="Bold">
+            <Label x:Name="lbl_header" Content="Offset-Setup Mode" VerticalAlignment="Top" Margin="10,10,10,0" Padding="10,5,5,5" Foreground="White" FontWeight="Bold" Visibility="Hidden">
                 <Label.Background>
                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                         <GradientStop Color="#56404040"/>
@@ -29,7 +29,7 @@
             </Label>
         </Grid>
         <Grid Cursor="None">
-            <Image HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="100" />
+            <Image x:Name="img_crosshair" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="100" Source="crosshair_sample.png" />
         </Grid>
         <Grid x:Name="grid_crosshair" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Cursor="None">
             <Grid.ColumnDefinitions>
