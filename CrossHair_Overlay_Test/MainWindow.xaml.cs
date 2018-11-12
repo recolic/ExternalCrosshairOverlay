@@ -97,37 +97,41 @@ namespace External_Crosshair_Overlay
                 {
                     crosshairOverlayWindow.ToggleOffsetSetupMode();
                 }
-                else if (keyPressed == Key.Up)
+
+                if (crosshairOverlayWindow.OffsetSetupMode)
                 {
-                    OffsetY = crosshairOverlayWindow.MoveCrosshairUp();
-                }
-                else if (keyPressed == Key.Down)
-                {
-                    OffsetY = crosshairOverlayWindow.MoveCrosshairDown();
-                }
-                else if (keyPressed == Key.Left)
-                {
-                    OffsetX = crosshairOverlayWindow.MoveCrosshairLeft();
-                }
-                else if (keyPressed == Key.Right)
-                {
-                    OffsetX = crosshairOverlayWindow.MoveCrosshairRight();
-                }
-                else if (keyPressed == Key.W)
-                {
-                    OffsetY = crosshairOverlayWindow.MoveCrosshairUp(true);
-                }
-                else if (keyPressed == Key.S)
-                {
-                    OffsetY = crosshairOverlayWindow.MoveCrosshairDown(true);
-                }
-                else if (keyPressed == Key.A)
-                {
-                    OffsetX = crosshairOverlayWindow.MoveCrosshairLeft(true);
-                }
-                else if (keyPressed == Key.D)
-                {
-                    OffsetX = crosshairOverlayWindow.MoveCrosshairRight(true);
+                    if (keyPressed == Key.Up)
+                    {
+                        OffsetY = crosshairOverlayWindow.MoveCrosshairUp();
+                    }
+                    else if (keyPressed == Key.Down)
+                    {
+                        OffsetY = crosshairOverlayWindow.MoveCrosshairDown();
+                    }
+                    else if (keyPressed == Key.Left)
+                    {
+                        OffsetX = crosshairOverlayWindow.MoveCrosshairLeft();
+                    }
+                    else if (keyPressed == Key.Right)
+                    {
+                        OffsetX = crosshairOverlayWindow.MoveCrosshairRight();
+                    }
+                    else if (keyPressed == Key.W)
+                    {
+                        OffsetY = crosshairOverlayWindow.MoveCrosshairUp(true);
+                    }
+                    else if (keyPressed == Key.S)
+                    {
+                        OffsetY = crosshairOverlayWindow.MoveCrosshairDown(true);
+                    }
+                    else if (keyPressed == Key.A)
+                    {
+                        OffsetX = crosshairOverlayWindow.MoveCrosshairLeft(true);
+                    }
+                    else if (keyPressed == Key.D)
+                    {
+                        OffsetX = crosshairOverlayWindow.MoveCrosshairRight(true);
+                    }
                 }
             }
         }
@@ -227,14 +231,14 @@ namespace External_Crosshair_Overlay
                             lbl_crosshair_pic.Content = "Default";
                         else
                             lbl_crosshair_pic.Content = "Img_File_With_Invalid_Name";
-                        cmb_color.IsEnabled = false;
-                        btn_SetColor.IsEnabled = false;
+                        cmb_color.IsEnabled = lbl_crosshair_pic.Content.ToString() == "Default";
+                        btn_SetColor.IsEnabled = lbl_crosshair_pic.Content.ToString() == "Default";
                     }
 
                     // set crosshair offsets
-                    crosshairOverlayWindow.SetCrosshairOffsets(config.OffsetX, config.OffsetY);
                     OffsetX = config.OffsetX;
                     OffsetY = config.OffsetY;
+                    crosshairOverlayWindow.SetCrosshairOffsets(OffsetX, OffsetY);
 
                     attachedProcessFilePath = processFilePath;
                     isAttachedToSomeProcess = true;

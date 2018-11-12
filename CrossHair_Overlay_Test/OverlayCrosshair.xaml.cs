@@ -22,10 +22,10 @@ namespace External_Crosshair_Overlay
         public EventHandler OffsetSet;
         public int CrosshairScale;
         private CrosshairMode crosshairMode = CrosshairMode.Default;
-        bool offsetSetupMode = false;
         int offsetSetupSpeed = 10;
 
         #region Setters
+        public bool OffsetSetupMode { get; private set; } = false;
         private Color crosshairColor = Colors.Red;
         private double crosshairTransparency = 1;
 
@@ -76,19 +76,19 @@ namespace External_Crosshair_Overlay
 
         public bool ToggleOffsetSetupMode()
         {
-            if (offsetSetupMode)
+            if (OffsetSetupMode)
             {
-                offsetSetupMode = false;
+                OffsetSetupMode = false;
                 lbl_header.Visibility = Visibility.Hidden;
                 lbl_footer.Visibility = Visibility.Hidden;
             }
             else
             {
-                offsetSetupMode = true;
+                OffsetSetupMode = true;
                 lbl_header.Visibility = Visibility.Visible;
                 lbl_footer.Visibility = Visibility.Visible;
             }
-            return offsetSetupMode;
+            return OffsetSetupMode;
         }
 
         public void SetCrosshairOffsets(int offsetX, int offsetY)
@@ -128,37 +128,34 @@ namespace External_Crosshair_Overlay
 
         private void SetMargin()
         {
-            if (offsetSetupMode)
+            Dispatcher.Invoke(() =>
             {
-                Dispatcher.Invoke(() =>
+                var top = 0D;
+                var bottom = 0D;
+                var left = 0D;
+                var right = 0D;
+
+                if (OffsetX <= 0)
                 {
-                    var top = 0D;
-                    var bottom = 0D;
-                    var left = 0D;
-                    var right = 0D;
+                    left = +OffsetX;
+                }
+                else
+                {
+                    right = -OffsetX;
+                }
 
-                    if (OffsetX <= 0)
-                    {
-                        left = +OffsetX;
-                    }
-                    else
-                    {
-                        right = -OffsetX;
-                    }
+                if (OffsetY <= 0)
+                {
+                    top = +OffsetY;
+                }
+                else
+                {
+                    bottom = -OffsetY;
+                }
 
-                    if (OffsetY <= 0)
-                    {
-                        top = +OffsetY;
-                    }
-                    else
-                    {
-                        bottom = -OffsetY;
-                    }
-
-                    grid_crosshair.Margin = new Thickness(left, top, right, bottom);
-                    img_crosshair.Margin = new Thickness(left, top, right, bottom);
-                });
-            }
+                grid_crosshair.Margin = new Thickness(left, top, right, bottom);
+                img_crosshair.Margin = new Thickness(left, top, right, bottom);
+            });
         }
 
         /// <summary>
@@ -384,7 +381,7 @@ namespace External_Crosshair_Overlay
                 {
                     HideWindows();
                     AttachedToProcessComplete?.Invoke("None", null);
-                    if (offsetSetupMode)
+                    if (OffsetSetupMode)
                     {
                         ToggleOffsetSetupMode();
                     }
