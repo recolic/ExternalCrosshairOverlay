@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Windows;
+using System.Threading;
+using System.Diagnostics;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
+using System.Collections.Generic;
+using External_Crosshair_Overlay.Config;
 
 namespace External_Crosshair_Overlay
 {
@@ -18,12 +18,16 @@ namespace External_Crosshair_Overlay
         #region Variables
         // global level crosshair window
         OverlayCrosshair crosshairOverlayWindow = new OverlayCrosshair();
+        // global level app-config saver/loader
+        ConfigSaver configSaver = new ConfigSaver();
+        // global low-level keyboard hook
         KeyboardHook kHook;
 
         List<Process> allRunningProcesses;
         List<string> nonEmptyWindowNames = new List<string>();
         List<Color> crosshairColors = new List<Color>();
         List<string> crosshairColorNames = new List<string>();
+        string attachedProcessFilePath = "";
         int offsetX = 0;
         int offsetY = 0;
 
@@ -81,6 +85,10 @@ namespace External_Crosshair_Overlay
             kHook.KeyCombinationPressed += KHook_KeyCombinationPressed;
         }
 
+        /// <summary>
+        /// Event triggered from keyboard-hook in case a key is pressed
+        /// </summary>
+        /// <param name="keyPressed">The key that was pressed</param>
         private void KHook_KeyCombinationPressed(Key keyPressed)
         {
             if (isAttachedToSomeProcess)
@@ -122,11 +130,6 @@ namespace External_Crosshair_Overlay
                     OffsetX = crosshairOverlayWindow.MoveCrosshairRight(true);
                 }
             }
-        }
-
-        private void SetOffsets()
-        {
-            lbl_offsets.Content = offsetX + ", " + offsetY + " (x, y from center)";
         }
 
         private void ReloadProcesses_Click(object sender, RoutedEventArgs e)
@@ -183,13 +186,66 @@ namespace External_Crosshair_Overlay
         /// Custom event triggered from the global <see cref="OverlayCrosshair"/> window
         /// </summary>
         /// <param name="processName">The name of the process' exe file</param>
-        private void AttachingToProcessComplete(string processName)
+        private void AttachingToProcessComplete(string processName, string processFilePath)
         {
             Dispatcher.Invoke(() =>
             {
                 if (lbl_attachTo.Content.ToString() != processName)
                     lbl_attachTo.Content = processName;
-                isAttachedToSomeProcess = processName != "None";
+                if (processName != "None")
+                {
+                    var config = configSaver.GetConfig(processFilePath);
+
+                    // set color
+                    cmb_color.SelectedIndex = config.CrosshairColorIndex;
+                    if (cmb_color.SelectedIndex >= 0)
+                    {
+                        crosshairOverlayWindow.SetCrosshairColor = crosshairColors[cmb_color.SelectedIndex];
+                    }
+
+                    // set opacity value
+                    sldr_Opacity.Value = config.CrosshairOpacity;
+                    crosshairOverlayWindow.SetCrosshairTransparency = sldr_Opacity.Value;
+
+                    // set crosshair scale
+                    if (config.CrosshairScale >= 1 && config.CrosshairScale <= 25)
+                    {
+                        crosshairOverlayWindow.SetCrosshairScale(config.CrosshairScale);
+                        lbl_crosshairScale.Content = crosshairOverlayWindow.CrosshairScale;
+                    }
+
+                    // set crosshair mode+picture
+                    if (crosshairOverlayWindow.SetCrosshairPic(config.CrosshairFileLocation))
+                    {
+                        var justFileName = (from x in config.CrosshairFileLocation.Split('\\')
+                                            where !string.IsNullOrWhiteSpace(x)
+                                            select x).LastOrDefault();
+
+                        if (!String.IsNullOrWhiteSpace(justFileName))
+                            lbl_crosshair_pic.Content = justFileName;
+                        else if (String.IsNullOrWhiteSpace(justFileName))
+                            lbl_crosshair_pic.Content = "Default";
+                        else
+                            lbl_crosshair_pic.Content = "Img_File_With_Invalid_Name";
+                        cmb_color.IsEnabled = false;
+                        btn_SetColor.IsEnabled = false;
+                    }
+
+                    // set crosshair offsets
+                    crosshairOverlayWindow.SetCrosshairOffsets(config.OffsetX, config.OffsetY);
+                    OffsetX = config.OffsetX;
+                    OffsetY = config.OffsetY;
+
+                    attachedProcessFilePath = processFilePath;
+                    isAttachedToSomeProcess = true;
+                    btn_saveConfig.IsEnabled = true;
+                }
+                else
+                {
+                    attachedProcessFilePath = "";
+                    isAttachedToSomeProcess = false;
+                    btn_saveConfig.IsEnabled = false;
+                }
             });
         }
 
@@ -224,6 +280,7 @@ namespace External_Crosshair_Overlay
                 if (crosshairOverlayWindow.SetCrosshairPic(fileName))
                 {
                     var justFileName = (from x in fileName.Split('\\')
+                                        where !string.IsNullOrWhiteSpace(x)
                                         select x).LastOrDefault();
                     if (!String.IsNullOrWhiteSpace(justFileName))
                         lbl_crosshair_pic.Content = justFileName;
@@ -234,6 +291,25 @@ namespace External_Crosshair_Overlay
                 }
             }
         }
+
+        private void btn_saveConfig_Click(object sender, RoutedEventArgs e)
+        {
+            var config = new OverlayConfig()
+            {
+                ProcessFilePath = attachedProcessFilePath,
+                CrosshairColorIndex = cmb_color.SelectedIndex,
+                CrosshairFileLocation = crosshairOverlayWindow.CrosshairImagePath,
+                CrosshairOpacity = sldr_Opacity.Value,
+                CrosshairScale = crosshairOverlayWindow.CrosshairScale,
+                OffsetX = OffsetX,
+                OffsetY = OffsetY
+            };
+
+            configSaver.SaveConfig(config);
+
+            MessageBox.Show("Config saved successfully");
+        }
+
         #endregion
 
         #region Custom Methods
@@ -278,13 +354,13 @@ namespace External_Crosshair_Overlay
         /// </summary>
         private void LoadColors()
         {
-            // Red color
-            crosshairColorNames.Add("Red");
-            crosshairColors.Add(Colors.Red);
-
             // Black color
             crosshairColorNames.Add("Black");
             crosshairColors.Add(Colors.Black);
+
+            // Red color
+            crosshairColorNames.Add("Red");
+            crosshairColors.Add(Colors.Red);
 
             // Blue color
             crosshairColorNames.Add("Blue");
@@ -328,6 +404,14 @@ namespace External_Crosshair_Overlay
 
             cmb_color.ItemsSource = crosshairColorNames;
             cmb_color.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Sets the content of the offsets label
+        /// </summary>
+        private void SetOffsets()
+        {
+            lbl_offsets.Content = offsetX + ", " + offsetY + " (x, y from center)";
         }
 
         #endregion

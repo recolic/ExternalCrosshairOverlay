@@ -1,17 +1,19 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 
-namespace CrossHair_Overlay_Test.Config
+namespace External_Crosshair_Overlay.Config
 {
+    [Serializable]
     public class OverlayConfig
     {
-        public string ProcessName { get; set; } = "";
+        public string ProcessFilePath { get; set; } = "";
         public string CrosshairFileLocation { get; set; } = "";
 
         public int OffsetX { get; set; } = 0;
         public int OffsetY { get; set; } = 0;
 
-        public Color CrosshairColor { get; set; } = Colors.Black;
+        public int CrosshairColorIndex { get; set; } = 0;
         public int CrosshairScale { get; set; } = 2;
-        public int CrosshairTransparency { get; set; } = 100;
+        public double CrosshairOpacity { get; set; } = 1D;
     }
 }

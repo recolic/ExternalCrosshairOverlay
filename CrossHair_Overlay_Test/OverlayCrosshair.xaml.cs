@@ -1,14 +1,14 @@
-﻿using CrossHair_Overlay_Test.Config;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
-using System.Windows.Interop;
+using System.Threading;
+using System.Diagnostics;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows.Interop;
 using System.Windows.Threading;
+using System.Windows.Media.Imaging;
+using System.Runtime.InteropServices;
+using External_Crosshair_Overlay.Config;
 
 namespace External_Crosshair_Overlay
 {
@@ -17,7 +17,7 @@ namespace External_Crosshair_Overlay
     /// </summary>
     public partial class OverlayCrosshair : Window
     {
-        public delegate void AttachedTo(string processName);
+        public delegate void AttachedTo(string processName, string processFilePath);
         public AttachedTo AttachedToProcessComplete;
         public EventHandler OffsetSet;
         public int CrosshairScale;
@@ -31,7 +31,7 @@ namespace External_Crosshair_Overlay
 
         public int OffsetX { get; set; } = 0;
         public int OffsetY { get; set; } = 0;
-        public Thickness CrosshairMargin { get; set; } = new Thickness(0, 0, 0, 0);
+        public string CrosshairImagePath { get; set; } = "";
 
         /// <summary>
         /// Sets the crosshair's color
@@ -89,6 +89,13 @@ namespace External_Crosshair_Overlay
                 lbl_footer.Visibility = Visibility.Visible;
             }
             return offsetSetupMode;
+        }
+
+        public void SetCrosshairOffsets(int offsetX, int offsetY)
+        {
+            OffsetX = offsetX;
+            OffsetY = offsetY;
+            SetMargin();
         }
 
         public int MoveCrosshairLeft(bool fastMode = false)
@@ -161,7 +168,7 @@ namespace External_Crosshair_Overlay
         public void AttachToProcess(Process newProcess)
         {
             currentProcess = newProcess;
-            AttachedToProcessComplete?.Invoke(currentProcess.ProcessName + ".exe(" + currentProcess.MainWindowTitle + ")");
+            AttachedToProcessComplete?.Invoke(currentProcess.ProcessName + ".exe(" + currentProcess.MainWindowTitle + ")", newProcess.MainModule.FileName);
         }
 
         /// <summary>
@@ -216,6 +223,7 @@ namespace External_Crosshair_Overlay
             if (String.IsNullOrWhiteSpace(filePath))
             {
                 crosshairMode = CrosshairMode.Default;
+                CrosshairImagePath = "";
             }
             else
             {
@@ -225,6 +233,7 @@ namespace External_Crosshair_Overlay
                     {
                         img_crosshair.Source = new BitmapImage(new UriBuilder(filePath).Uri);
                         crosshairMode = CrosshairMode.Custom;
+                        CrosshairImagePath = filePath;
                     }
                     catch
                     {
@@ -292,7 +301,7 @@ namespace External_Crosshair_Overlay
                             if (errorFiredOnce)
                             {
                                 errorFiredOnce = false;
-                                AttachedToProcessComplete?.Invoke(currentProcess.ProcessName + ".exe(" + currentProcess.MainWindowTitle + ")");
+                                AttachedToProcessComplete?.Invoke(currentProcess.ProcessName + ".exe(" + currentProcess.MainWindowTitle + ")", currentProcess.MainModule.FileName);
                             }
                         });
                     }
@@ -374,7 +383,7 @@ namespace External_Crosshair_Overlay
                 if (currentProcess != null && !errorFiredOnce)
                 {
                     HideWindows();
-                    AttachedToProcessComplete?.Invoke("None");
+                    AttachedToProcessComplete?.Invoke("None", null);
                     if (offsetSetupMode)
                     {
                         ToggleOffsetSetupMode();

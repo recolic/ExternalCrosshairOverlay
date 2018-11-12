@@ -1,11 +1,12 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace CrossHair_Overlay_Test.Config
+namespace External_Crosshair_Overlay.Config
 {
     public class ConfigSaver
     {
-        public string DefaultSavePath { get; private set; } = "%APPDATA%\\CrosshairOverlay";
+        public string DefaultSavePath { get; private set; } = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\CrosshairOverlay";
 
         public ConfigSaver()
         {
@@ -17,10 +18,18 @@ namespace CrossHair_Overlay_Test.Config
 
         public void SaveConfig(OverlayConfig overlayConfig)
         {
-            var targetFile = DefaultSavePath + "\\" + overlayConfig.ProcessName + ".eoc";
+            var fileName = (from x in overlayConfig.ProcessFilePath.Split('\\')
+                            where !string.IsNullOrWhiteSpace(x)
+                            select x).LastOrDefault();
+
+            var fileSize = new FileInfo(overlayConfig.ProcessFilePath).Length;
+            fileName += fileSize;
+
+            var targetFile = DefaultSavePath + "\\" + fileName + ".eoc";
 
             if (File.Exists(targetFile))
             {
+                var asdasd = new FileInfo(targetFile).FullName;
                 File.Delete(targetFile);
             }
 
@@ -32,21 +41,35 @@ namespace CrossHair_Overlay_Test.Config
             }
         }
 
-        public OverlayConfig GetConfig(string processName)
+        public OverlayConfig GetConfig(string processFilePath)
         {
+            var fileName = (from x in processFilePath.Split('\\')
+                            where !string.IsNullOrWhiteSpace(x)
+                            select x).LastOrDefault();
+
+            var fileSize = new FileInfo(processFilePath).Length;
+            fileName += fileSize;
+
             var retThis = new OverlayConfig();
-            var targetFile = DefaultSavePath + "\\" + processName + ".eoc";
+            var targetFile = DefaultSavePath + "\\" + fileName + ".eoc";
             if (!File.Exists(targetFile))
             {
-                retThis.ProcessName = processName;
+                retThis.ProcessFilePath = processFilePath;
                 return retThis;
             }
 
-            using (var fStream = File.OpenRead(targetFile))
+            try
             {
-                var formatter = new BinaryFormatter();
-                retThis = (OverlayConfig)formatter.Deserialize(fStream);
-                fStream.Close();
+                using (var fStream = File.OpenRead(targetFile))
+                {
+                    var formatter = new BinaryFormatter();
+                    retThis = (OverlayConfig)formatter.Deserialize(fStream);
+                    fStream.Close();
+                }
+            }
+            catch
+            {
+                retThis.ProcessFilePath = processFilePath;
             }
 
             return retThis;

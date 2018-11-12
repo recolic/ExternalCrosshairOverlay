@@ -1,4 +1,4 @@
-﻿namespace CrossHair_Overlay_Test.Config
+﻿namespace External_Crosshair_Overlay.Config
 {
     public enum CrosshairMode
     {

@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B74442BC-B539-4C42-BE36-A8CCB630FD77}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>CrossHair_Overlay_Test</RootNamespace>
+    <RootNamespace>External_Crosshair_Overlay</RootNamespace>
     <AssemblyName>ExternalCrossHairOverlay</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

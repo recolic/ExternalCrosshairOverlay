@@ -46,15 +46,15 @@
         <Label Content="Crosshair Color :" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="9" Padding="5,0,0,0" VerticalAlignment="Center"/>
         <ComboBox x:Name="cmb_color" Margin="97,0,80,0" Grid.Column="1" Grid.Row="9"/>
         <Button x:Name="btn_SetColor" Content="Set Color" HorizontalAlignment="Right" Margin="0" Width="75" Grid.Column="1" Grid.Row="9" Click="ChangeCrosshairColor_Click"/>
-        <Label Content="Crosshair Transparency :" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="11" Padding="5,0,0,0" VerticalAlignment="Center"/>
-        <Slider Grid.Column="1" Grid.Row="11" Margin="137,1,0,0" Padding="0" Maximum="1" LargeChange="0.2" Value="1" ValueChanged="CrosshairTransparency_ValueChanged" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TickFrequency="0.01"/>
+        <Label Content="Crosshair Opacity :" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="11" Padding="5,0,0,0" VerticalAlignment="Center"/>
+        <Slider x:Name="sldr_Opacity" Grid.Column="1" Grid.Row="11" Margin="108,1,0,0" Padding="0" Maximum="1" LargeChange="0.2" Value="1" ValueChanged="CrosshairTransparency_ValueChanged" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TickFrequency="0.01"/>
         <Label Content="Crosshair Pic :" Grid.Column="1" HorizontalAlignment="Left" Margin="0,3" Grid.Row="13" Padding="5,0,0,0" VerticalAlignment="Center"/>
         <Label Content="Default" x:Name="lbl_crosshair_pic" Grid.Column="1" HorizontalAlignment="Left" Margin="78,3,0,3" Grid.Row="13" Padding="5,0,0,0" VerticalAlignment="Center"/>
         <Label Content="Offsets :" Grid.Column="1" HorizontalAlignment="Left" Margin="0,3.02" Grid.Row="15" Padding="5,0,0,0" VerticalAlignment="Center"/>
         <Label Content="0, 0 (x, y - from center)" x:Name="lbl_offsets" Grid.Column="1" HorizontalAlignment="Left" Margin="47.976,3.02,0,3.02" Grid.Row="15" Padding="5,0,0,0" VerticalAlignment="Center"/>
         <Button x:Name="btn_resetPic" Content="Reset Pic" HorizontalAlignment="Right" Width="75" Grid.Column="1" Margin="0" Grid.Row="13" Click="btn_resetPic_Click"/>
         <Button x:Name="btn_loadPic" Content="Load Pic" HorizontalAlignment="Right" Width="75" Grid.Column="1" Margin="0,0,80,0" Grid.Row="13" Click="btn_loadPic_Click"/>
-        <Button x:Name="btn_saveConfig" IsEnabled="False" Content="Save Configuration" HorizontalAlignment="Right" Grid.Column="1" Margin="0" Grid.Row="15" Width="155"/>
+        <Button x:Name="btn_saveConfig" IsEnabled="False" Content="Save Configuration" HorizontalAlignment="Right" Grid.Column="1" Margin="0" Grid.Row="15" Width="155" Click="btn_saveConfig_Click"/>
 
     </Grid>
 </Window>
