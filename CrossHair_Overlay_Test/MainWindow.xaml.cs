@@ -98,6 +98,11 @@ namespace External_Crosshair_Overlay
                     crosshairOverlayWindow.ToggleOffsetSetupMode();
                 }
 
+                if (keyPressed == Key.OemPlus)
+                {
+                    crosshairOverlayWindow.ToggleOverlayOpacity();
+                }
+
                 if (crosshairOverlayWindow.OffsetSetupMode)
                 {
                     if (keyPressed == Key.Up)

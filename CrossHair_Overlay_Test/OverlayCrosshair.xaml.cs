@@ -26,7 +26,9 @@ namespace External_Crosshair_Overlay
 
         #region Setters
         public bool OffsetSetupMode { get; private set; } = false;
+        public bool CrosshairToggled { get; private set; } = false;
         private Color crosshairColor = Colors.Red;
+        private double originalTransparency = 1;
         private double crosshairTransparency = 1;
 
         public int OffsetX { get; set; } = 0;
@@ -53,6 +55,8 @@ namespace External_Crosshair_Overlay
             set
             {
                 crosshairTransparency = value;
+                if (!CrosshairToggled)
+                    originalTransparency = value;
                 if (crosshairMode == CrosshairMode.Default)
                     grid_crosshair.Opacity = value;
                 else
@@ -89,6 +93,21 @@ namespace External_Crosshair_Overlay
                 lbl_footer.Visibility = Visibility.Visible;
             }
             return OffsetSetupMode;
+        }
+
+        public bool ToggleOverlayOpacity()
+        {
+            if (CrosshairToggled)
+            {
+                CrosshairToggled = false;
+                SetCrosshairTransparency = originalTransparency;
+            }
+            else
+            {
+                CrosshairToggled = true;
+                SetCrosshairTransparency = 0.0;
+            }
+            return CrosshairToggled;
         }
 
         public void SetCrosshairOffsets(int offsetX, int offsetY)
