@@ -21,6 +21,7 @@ Download [here](https://ci.appveyor.com/project/gmastergreatee/externalcrosshair
 - [x] supports custom crosshair option(png/jpeg images - other formats experimental)
 - [x] set the crosshair offset manually(__Hotkey : "-"(Minus key)__)
 - [x] saving of configuration based on the target game
+- [x] toggle display of crosshair while in-game using "=" key
 
 
 __Feel free to suggest for more features__
