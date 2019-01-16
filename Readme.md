@@ -23,5 +23,9 @@ Download [here](https://ci.appveyor.com/project/gmastergreatee/externalcrosshair
 - [x] saving of configuration based on the target game
 - [x] toggle display of crosshair while in-game using "=" key
 
+### Notice (16 Jan, 2019)
+__ECO__ was developed as a prototype. Therefore, there will be no further enhancements to the app for now after milestone 0.2.2 is reached.
 
-__Feel free to suggest for more features__
+__Feature requests are still welcome.__
+
+A new project __(GuidedFPS)__ is under development(offline atm) which will implement all the features of this project.
