@@ -22,6 +22,7 @@ Download [here](https://ci.appveyor.com/project/gmastergreatee/externalcrosshair
 - [x] set the crosshair offset manually(__Hotkey : "-"(Minus key)__)
 - [x] saving of configuration based on the target game
 - [x] toggle display of crosshair while in-game using "=" key
+- [ ] DPI aware(bug [#8](https://github.com/gmastergreatee/ExternalCrosshairOverlay/issues/8))
 
 ### Notice (16 Jan, 2019)
 __ECO__ was developed as a prototype. Therefore, there will be no further enhancements to the app for now after milestone 0.2.2 is reached.
