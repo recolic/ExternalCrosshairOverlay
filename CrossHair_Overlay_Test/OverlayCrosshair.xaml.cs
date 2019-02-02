@@ -23,6 +23,7 @@ namespace External_Crosshair_Overlay
         public int CrosshairScale;
         private CrosshairMode crosshairMode = CrosshairMode.Default;
         int offsetSetupSpeed = 10;
+        double dpiFactor = 1;
 
         #region Setters
         public bool OffsetSetupMode { get; private set; } = false;
@@ -307,10 +308,10 @@ namespace External_Crosshair_Overlay
                             SetWindowPos(currentWindowHandle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
 
                             // set the position & visibility of the crosshair's window
-                            Top = rectangle.top;
-                            Left = rectangle.left;
-                            Height = rectangle.bottom - rectangle.top;
-                            Width = rectangle.right - rectangle.left;
+                            Top = rectangle.top / dpiFactor;
+                            Left = rectangle.left / dpiFactor;
+                            Height = (rectangle.bottom - rectangle.top) / dpiFactor;
+                            Width = (rectangle.right - rectangle.left) / dpiFactor;
                             DisplayWindow();
 
                             // reset error trigger if no errors found
@@ -386,6 +387,8 @@ namespace External_Crosshair_Overlay
 
             // setting the default crosshair scale
             SetCrosshairScale(2);
+
+            dpiFactor = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.M11;
         }
 
         /// <summary>
