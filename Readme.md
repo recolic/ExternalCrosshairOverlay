@@ -25,7 +25,7 @@ Download [here](https://ci.appveyor.com/project/gmastergreatee/externalcrosshair
 - [x] DPI aware
 
 ### Notice (16 Jan, 2019)
-__ECO__ was developed as a prototype. Therefore, there will be no further enhancements to the app for now after milestone 0.2.2 is reached.
+__ECO__ was developed as a prototype. Therefore, there will be no further enhancements to the app __AFTER__ milestone 0.2.2 is reached.
 
 __Feature requests are still welcome.__
 
