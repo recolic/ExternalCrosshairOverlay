@@ -28,6 +28,3 @@ Download [here](https://ci.appveyor.com/project/gmastergreatee/externalcrosshair
 __ECO__ was developed as a prototype. Therefore, there will be no further enhancements to the app __AFTER__ milestone 0.2.2 is reached.
 
 __Feature requests are still welcome.__
-
-A new project __(GuidedFPS)__ is under development(offline atm) which will implement all the features of this project.
-
