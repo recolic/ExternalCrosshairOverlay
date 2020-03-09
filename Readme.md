@@ -19,7 +19,7 @@ Download [here](https://ci.appveyor.com/project/gmastergreatee/externalcrosshair
 - [x] display crosshair on selected process
 - [x] entirely in C# (no DirectX dependencies)
 - [x] supports custom crosshair option(png/jpeg images - other formats experimental)
-- [x] set the crosshair offset manually(__Hotkey : "-"(Minus key)__)
+- [x] set the crosshair offset manually(__Hotkey : "-"(Minus key) [Movement: Arrows/WASD]__)
 - [x] saving of configuration based on the target game
 - [x] toggle display of crosshair while in-game using "=" key
 - [x] DPI aware
