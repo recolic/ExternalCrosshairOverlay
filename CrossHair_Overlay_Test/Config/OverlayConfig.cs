@@ -13,7 +13,7 @@ namespace External_Crosshair_Overlay.Config
         public int OffsetY { get; set; } = 0;
 
         public int CrosshairColorIndex { get; set; } = 0;
-        public int CrosshairScale { get; set; } = 2;
+        public float CrosshairScale { get; set; } = 2;
         public double CrosshairOpacity { get; set; } = 1D;
     }
 }

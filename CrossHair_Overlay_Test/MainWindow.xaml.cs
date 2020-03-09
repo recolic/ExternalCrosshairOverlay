@@ -30,6 +30,8 @@ namespace External_Crosshair_Overlay
         string attachedProcessFilePath = "";
         int offsetX = 0;
         int offsetY = 0;
+        float minCrosshairScale = 0.00001F;
+        float maxCrosshairScale = 50;
 
         public int OffsetX
         {
@@ -76,6 +78,8 @@ namespace External_Crosshair_Overlay
             LoadColors();
             // load all the processes
             LoadProcesses();
+            minCrosshairScale = Convert.ToSingle(sldr_CrosshairScale.Minimum);
+            maxCrosshairScale = Convert.ToSingle(sldr_CrosshairScale.Maximum);
             // attaching to event the handler
             crosshairOverlayWindow.AttachedToProcessComplete += AttachingToProcessComplete;
             // display the transparent crosshair window
@@ -101,6 +105,10 @@ namespace External_Crosshair_Overlay
                 if (keyPressed == Key.OemPlus)
                 {
                     crosshairOverlayWindow.ToggleOverlayOpacity();
+                    Dispatcher.Invoke(() =>
+                    {
+                        SetTitle();
+                    });
                 }
 
                 if (crosshairOverlayWindow.OffsetSetupMode)
@@ -155,24 +163,6 @@ namespace External_Crosshair_Overlay
             }
         }
 
-        private void ReduceCrosshairScale_Click(object sender, RoutedEventArgs e)
-        {
-            if (crosshairOverlayWindow.CrosshairScale > 1)
-            {
-                crosshairOverlayWindow.SetCrosshairScale(crosshairOverlayWindow.CrosshairScale - 1);
-                lbl_crosshairScale.Content = crosshairOverlayWindow.CrosshairScale;
-            }
-        }
-
-        private void IncreaseCrosshairScale_Click(object sender, RoutedEventArgs e)
-        {
-            if (crosshairOverlayWindow.CrosshairScale < 25)
-            {
-                crosshairOverlayWindow.SetCrosshairScale(crosshairOverlayWindow.CrosshairScale + 1);
-                lbl_crosshairScale.Content = crosshairOverlayWindow.CrosshairScale;
-            }
-        }
-
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
@@ -184,6 +174,12 @@ namespace External_Crosshair_Overlay
             {
                 crosshairOverlayWindow.SetCrosshairColor = crosshairColors[cmb_color.SelectedIndex];
             }
+        }
+
+        private void CrosshairScale_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            crosshairOverlayWindow.SetCrosshairScale((float)e.NewValue);
+            SetTitle();
         }
 
         private void CrosshairTransparency_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -217,10 +213,10 @@ namespace External_Crosshair_Overlay
                     crosshairOverlayWindow.SetCrosshairTransparency = sldr_Opacity.Value;
 
                     // set crosshair scale
-                    if (config.CrosshairScale >= 1 && config.CrosshairScale <= 25)
+                    if (config.CrosshairScale >= minCrosshairScale && config.CrosshairScale <= maxCrosshairScale)
                     {
                         crosshairOverlayWindow.SetCrosshairScale(config.CrosshairScale);
-                        lbl_crosshairScale.Content = crosshairOverlayWindow.CrosshairScale;
+                        sldr_CrosshairScale.Value = crosshairOverlayWindow.CrosshairScale;
                     }
 
                     // set crosshair mode+picture
@@ -248,6 +244,8 @@ namespace External_Crosshair_Overlay
                     attachedProcessFilePath = processFilePath;
                     isAttachedToSomeProcess = true;
                     btn_saveConfig.IsEnabled = true;
+
+                    SetTitle();
                 }
                 else
                 {
@@ -423,6 +421,10 @@ namespace External_Crosshair_Overlay
             lbl_offsets.Content = offsetX + ", " + offsetY + " (x, y from center)";
         }
 
+        private void SetTitle()
+        {
+            ECOWindow.Title = "ECO by gmastergreatee - " + sldr_CrosshairScale.Value.ToString("n4") + " - [" + (crosshairOverlayWindow.CrosshairToggled ? "Visible" : "Hidden") + "]";
+        }
         #endregion
     }
 }

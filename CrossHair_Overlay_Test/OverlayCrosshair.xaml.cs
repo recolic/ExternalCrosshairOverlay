@@ -20,7 +20,7 @@ namespace External_Crosshair_Overlay
         public delegate void AttachedTo(string processName, string processFilePath);
         public AttachedTo AttachedToProcessComplete;
         public EventHandler OffsetSet;
-        public int CrosshairScale;
+        public float CrosshairScale;
         private CrosshairMode crosshairMode = CrosshairMode.Default;
         int offsetSetupSpeed = 10;
         double dpiFactor = 1;
@@ -192,7 +192,7 @@ namespace External_Crosshair_Overlay
         /// Set the crosshair's scale
         /// </summary>
         /// <param name="scale">The scale</param>
-        public void SetCrosshairScale(int scale)
+        public void SetCrosshairScale(float scale)
         {
             // recording the crosshair scale to return to the calling GUI when asked for
             CrosshairScale = scale;
