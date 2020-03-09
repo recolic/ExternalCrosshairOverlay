@@ -30,7 +30,7 @@ namespace External_Crosshair_Overlay
         string attachedProcessFilePath = "";
         int offsetX = 0;
         int offsetY = 0;
-        float minCrosshairScale = 0.00001F;
+        float minCrosshairScale = 0.0001F;
         float maxCrosshairScale = 50;
 
         public int OffsetX
@@ -159,7 +159,15 @@ namespace External_Crosshair_Overlay
             // if selected combo box item isn't empty(empty one is at index -1)
             if (cmb_Processes.SelectedIndex >= 0)
             {
-                crosshairOverlayWindow.AttachToProcess(allRunningProcesses[cmb_Processes.SelectedIndex]);
+                var process = allRunningProcesses[cmb_Processes.SelectedIndex];
+                if (!process.HasExited)
+                {
+                    crosshairOverlayWindow.AttachToProcess(process);
+                }
+                else
+                {
+                    MessageBox.Show("The selected process has exited. Please \"Reload Processes\" and select the process again.", "Process Exited", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
