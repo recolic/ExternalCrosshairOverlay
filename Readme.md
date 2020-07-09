@@ -1,7 +1,7 @@
 # External Crosshair Overlay
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3d1t03v8dpuncpi0?svg=true)](https://ci.appveyor.com/project/gmastergreatee/externalcrosshairoverlay)
-[![PayPal Donate](https://img.shields.io/badge/donate-PayPal-orange.svg?style=flat-square&logo=paypal)](https://www.paypal.me/gmastergreatee)
+[![PayPal Donate](https://img.shields.io/badge/donate-PayPal-orange.svg?style=flat-square&logo=paypal)](https://www.paypal.me/RajarshiVaidya)
 
 Credits : gmastergreatee
 
