@@ -371,21 +371,24 @@ namespace External_Crosshair_Overlay
             GetWindowRect(hWnd, out windowRect);
             GetClientRect(hWnd, out clientRect);
 
-            #region calculate titlebar height if present
+            #region Calculate titlebar height if present
 
             var windowWidth = windowRect.right - windowRect.left;
             var clientWidth = clientRect.right - clientRect.left;
-            if (windowWidth > clientWidth)
+            var borderSize = (windowWidth - clientWidth) / 2;
+            if (borderSize >= 0)
             {
-                var borderSize = (windowWidth - clientWidth) / 2;
                 var windowHeight = windowRect.bottom - windowRect.top;
                 var clientHeight = clientRect.bottom - clientRect.top;
                 var titleHeight = windowHeight - clientHeight - borderSize;
 
                 windowRect.top += titleHeight;
-                windowRect.bottom -= borderSize;
-                windowRect.left += borderSize;
-                windowRect.right -= borderSize;
+                if (borderSize > 0)
+                {
+                    windowRect.bottom -= borderSize;
+                    windowRect.left += borderSize;
+                    windowRect.right -= borderSize;
+                }
             }
 
             #endregion
