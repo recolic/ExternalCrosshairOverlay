@@ -366,9 +366,31 @@ namespace External_Crosshair_Overlay
         /// <returns></returns>
         private RECT GetWindowRect(IntPtr hWnd)
         {
-            RECT result = new RECT();
-            GetWindowRect(hWnd, out result);
-            return result;
+            RECT windowRect = new RECT();
+            RECT clientRect = new RECT();
+            GetWindowRect(hWnd, out windowRect);
+            GetClientRect(hWnd, out clientRect);
+
+            #region calculate titlebar height if present
+
+            var windowWidth = windowRect.right - windowRect.left;
+            var clientWidth = clientRect.right - clientRect.left;
+            if (windowWidth > clientWidth)
+            {
+                var borderSize = (windowWidth - clientWidth) / 2;
+                var windowHeight = windowRect.bottom - windowRect.top;
+                var clientHeight = clientRect.bottom - clientRect.top;
+                var titleHeight = windowHeight - clientHeight - borderSize;
+
+                windowRect.top += titleHeight;
+                windowRect.bottom -= borderSize;
+                windowRect.left += borderSize;
+                windowRect.right -= borderSize;
+            }
+
+            #endregion
+
+            return windowRect;
         }
 
         /// <summary>
@@ -442,6 +464,16 @@ namespace External_Crosshair_Overlay
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
+
+        /// <summary>
+        /// User32's method to query for the target client's coordinates
+        /// </summary>
+        /// <param name="hwnd">The handle of the target process</param>
+        /// <param name="lpRect">The output <see cref="RECT"/> object</param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetClientRect(IntPtr hwnd, out RECT lpRect);
 
         /// <summary>
         /// Gets the styles of the window
