@@ -40,7 +40,7 @@
         <Label Content="Attached To :" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="5" Padding="5,0,0,0" VerticalAlignment="Center"/>
         <Label Content="None" Name="lbl_attachTo" Grid.Column="1" HorizontalAlignment="Left" Margin="74,0,0,0" Grid.Row="5" Padding="5,0,0,0" VerticalAlignment="Center"/>
         <Label Content="Crosshair Scale :" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="7" Padding="5,0,0,0" VerticalAlignment="Center"/>
-        <Slider x:Name="sldr_CrosshairScale" Grid.Column="1" Grid.Row="7" Margin="97,1,0,0" Padding="0" Maximum="50" LargeChange="0.01" Value="1" ValueChanged="CrosshairScale_ValueChanged" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TickFrequency="0.01" SmallChange="0.001" Minimum="0.0001" AutoToolTipPlacement="TopLeft"/>
+        <Slider x:Name="sldr_CrosshairScale" Grid.Column="1" Grid.Row="7" Margin="97,1,0,0" Padding="0" Maximum="50" LargeChange="0.1" Value="1" ValueChanged="CrosshairScale_ValueChanged" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TickFrequency="0.01" SmallChange="0.01" Minimum="0.01" AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"/>
         <Label Content="Crosshair Color :" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="9" Padding="5,0,0,0" VerticalAlignment="Center"/>
         <ComboBox x:Name="cmb_color" Margin="97,0,80,0" Grid.Column="1" Grid.Row="9"/>
         <Button x:Name="btn_SetColor" Content="Set Color" HorizontalAlignment="Right" Margin="0" Width="75" Grid.Column="1" Grid.Row="9" Click="ChangeCrosshairColor_Click"/>

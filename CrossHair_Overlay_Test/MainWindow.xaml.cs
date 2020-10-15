@@ -431,7 +431,7 @@ namespace External_Crosshair_Overlay
 
         private void SetTitle()
         {
-            ECOWindow.Title = "ECO by gmastergreatee - " + sldr_CrosshairScale.Value.ToString("n4") + " - [" + (!crosshairOverlayWindow.CrosshairToggled ? "Visible" : "Hidden") + "]";
+            ECOWindow.Title = "ECO by gmastergreatee - " + sldr_CrosshairScale.Value.ToString("n2") + " - [" + (!crosshairOverlayWindow.CrosshairToggled ? "Visible" : "Hidden") + "]";
         }
         #endregion
     }

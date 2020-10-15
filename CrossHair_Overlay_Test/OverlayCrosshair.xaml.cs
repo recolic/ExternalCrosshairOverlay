@@ -210,7 +210,7 @@ namespace External_Crosshair_Overlay
             }
             else
             {
-                var originalCrosshairScale = CrosshairScale * 0.25;
+                var originalCrosshairScale = CrosshairScale * 0.1;
                 img_crosshair.LayoutTransform = new ScaleTransform(originalCrosshairScale, originalCrosshairScale);
             }
         }

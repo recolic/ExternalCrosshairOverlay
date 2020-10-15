@@ -26,8 +26,8 @@
                 </Label.Background>
             </Label>
         </Grid>
-        <Grid Cursor="None">
-            <Image x:Name="img_crosshair" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="100" Source="crosshair_sample.png" Visibility="Hidden" />
+        <Grid Cursor="None" UseLayoutRounding="True">
+            <Image x:Name="img_crosshair" Source="crosshair_sample.png" RenderOptions.BitmapScalingMode="NearestNeighbor" Visibility="Hidden" Stretch="None" />
         </Grid>
         <Grid x:Name="grid_crosshair" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Cursor="None">
             <Grid.ColumnDefinitions>
