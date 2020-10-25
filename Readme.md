@@ -25,6 +25,8 @@ Download [here](https://github.com/gmastergreatee/ExternalCrosshairOverlay/relea
 - [x] toggle display of crosshair while in-game using "=" key
 - [x] DPI aware
 
+#### Note : Configs are stored at `%APPDATA%\CrosshairOverlay` folder. Delete files to hard-reset the config.
+
 ### Notice (16 Jan, 2019)
 __ECO__ was developed as a prototype. Therefore, there will be no further enhancements to the app __AFTER__ milestone 0.2.2 is reached.
 
