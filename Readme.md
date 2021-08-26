@@ -27,6 +27,11 @@ Download [here](https://github.com/gmastergreatee/ExternalCrosshairOverlay/relea
 
 #### Note : Configs are stored at `%APPDATA%\CrosshairOverlay` folder. Delete files to hard-reset the config.
 
+### Crosshair Scaling by lower values
+
+To make minor adjustments, focus the slider by clicking it, then press the buttons left/right arrow keys(or up/down) 
+It should change by 0.01 points in that case, whereas clicking on either side of the slider with mouse should change by 0.1 points
+
 ### Notice (16 Jan, 2019)
 __ECO__ was developed as a prototype. Therefore, there will be no further enhancements to the app __AFTER__ milestone 0.2.2 is reached.
 
