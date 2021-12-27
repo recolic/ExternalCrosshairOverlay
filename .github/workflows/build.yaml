@@ -1,0 +1,22 @@
+name: Build
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup MSBuild path
+        uses: microsoft/setup-msbuild@v1.0.0
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.2
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      - run: nuget restore CrossHair_Overlay_Test.sln
+      - run: msbuild CrossHair_Overlay_Test.sln /p:Configuration=Release
+      - uses: actions/upload-artifact@v2
+        with:
+          name: prebuilt-binary
+          path: Release/ExternalCrossHairOverlay.exe
+

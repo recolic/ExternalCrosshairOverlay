@@ -1,4 +1,4 @@
-# Rescued by Recolic
+# Recovered
 
 This project is recovered from <https://web.archive.org/web/20210609033716/https://github.com/gmastergreatee/ExternalCrosshairOverlay> and <https://github.com/tweakrrr/ECO>. gmastergreatee has deleted his whole github account, RIP. 
 
