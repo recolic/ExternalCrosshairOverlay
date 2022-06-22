@@ -4,7 +4,7 @@ This project is recovered from <https://web.archive.org/web/20210609033716/https
 
 **Thanks to @tweakrrr**. Without his fork, we would have lost this awesome crosshair overlay. This is almost the **only tool** to allow you to overlay a custom PNG, without any scaling. This allows you to create a high-quality firing table overlay, to use your sniper rifle like mortar! 
 
-I will help releasing latest binaries, and accepting issues and pull requests, just like the original project. 
+I will help releasing latest binaries, and accepting issues and pull requests, just like the original project. [Download latest binary here](https://github.com/recolic/ExternalCrosshairOverlay/releases). 
 
 ```
 9 URLs have been captured for this URL prefix.
